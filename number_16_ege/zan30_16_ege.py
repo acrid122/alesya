@@ -1,0 +1,91 @@
+
+
+""" 
+без мемоизации
+def fib(num):
+    if num == 1:
+        return 0
+    if num == 2:
+        return 1
+    return fib(num - 2) + fib(num - 1)
+
+print(fib(38)) """
+
+#чтобы добавить мемоизацию, надо использовать декоратор. Декоратор - просто надстройка над функцией.
+from functools import cache #cache - декоратор, который позволяет увеличить функционал обычной рекурсивной функции и позволяет кэшировать значения
+
+@cache #декоратор указывается перед функцией (над определением функции через @)
+def fib(num):
+    if num == 1:
+        return 0
+    if num == 2:
+        return 1
+    return fib(num - 2) + fib(num - 1)
+
+print(fib(38)) 
+
+#Любую рекурсию можно переписать итеративно. И любой итеративный алгоритм можно переписать рекурсией
+
+f = [0] * 38
+f[1] = 1
+for i in range(2, 38):
+    f[i] = f[i - 2] + f[i - 1]
+print(f[37])
+
+from sys import setrecursionlimit
+setrecursionlimit(9000) #если непонятно, как выставлять глубину стека, то можно просто подбирать
+
+def f1(n):
+    if n <= 10:
+        return n
+    return n - 7 + f1(n - 21)
+#RecursionError: maximum recursion depth exceeded. Превышена глубина рекурсии
+print((f1(185734) - f1(185650)) / f1(40))
+#(185734 - 10) / 21 = 8844 - вызовов будет примерно
+
+fp1 = [0] * 185735 #чтобы у нас был индекс 185734
+
+for i in range(185735):
+    if i <= 10:
+        fp1[i] = i
+    else:
+        if i - 21 < 0:
+            fp1[i] = i - 7 + (i - 21)
+        else:
+            fp1[i] = i - 7 + fp1[i - 21]
+print((fp1[185734] - fp1[185650]) / fp1[40])
+
+setrecursionlimit(100000)
+
+def f2(n):
+    if n < 19:
+        return 6 * (g2(n - 7) - 36)
+    else:
+        return f2(n - 4) + 3580
+
+def g2(n):
+    if n >= 248045:
+        return n / 20 + 28
+    else:
+        return g2(n + 9) - 4
+
+print(f2(673))
+
+#Чтобы уменьшить глубину стека вызовов можно использовать мемоизацию
+
+fp2 = [0] * 674
+gp2 = [0] * 250001
+
+for i in range(250000, -1, -1):
+    if i < 248045:
+        gp2[i] = gp2[i + 9] - 4
+    else:
+        gp2[i] = i / 20 + 28
+
+for i in range(674):
+    if i < 19:
+        fp2[i] = 6 * (gp2[i - 7] - 36)
+    else:
+        fp2[i] = fp2[i - 4] + 3580
+
+print(fp2[673])

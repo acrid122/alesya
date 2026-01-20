@@ -142,22 +142,3 @@ for i in range(700_000 + 1, 10 ** 10):
         print(i, p)
     if count == 5:
         break
-
-#3 способ
-
-def is_prime(x):
-    if (x % 2 == 0 and x != 2) or x < 2:
-        return False
-    for d in range(3, int(x ** .5) + 1, 2):
-        if x % d == 0:
-            return False
-    return True
-
-count = 0
-for d in range(2, 1001):
-    for exp in range(2, 30):
-        if count < 5 and is_prime(d) and d ** exp > 700_000:
-            count += 1
-            print(d ** exp, d)
-        if count == 5:
-            exit

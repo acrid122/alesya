@@ -134,6 +134,24 @@ def fact(x):
 print(fact(36))
 #defaultdict(<class 'int'>, {2: 2, 3: 2})
 
+'''
+UPD: лучше так:
+
+def fact(x):
+
+    factors = defaultdict(int)
+    d = 2
+
+    while d ** 2 <= x: #d <= sqrt(x); d <= int(x ** .5)
+        if x % d == 0 and '2' in str(d): #содержит в своей записи ровной одну цифру 2
+            factors[d] += 1
+            x //= d
+        else:
+            d += 1
+
+    factors[x] += 1
+'''
+
 #Подсчет количества делителей числа
 '''
 Математическая формула:
@@ -211,3 +229,5 @@ from math import gcd, lcm
 
 print(gcd(36, 12))
 print(lcm(36, 12))
+
+

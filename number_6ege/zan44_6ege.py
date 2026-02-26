@@ -41,3 +41,37 @@ def fact(n, p=2):
             return [i] + fact(n // i, i)
     return [n]
 print(fact(18, 2))
+
+def fact_rec_opt(n, p=2):
+    res = set()
+
+    if p == 2:
+        while n % 2 == 0:
+            res.add(2)
+            n //= 2
+        p = 3
+
+    lim = int(n**0.5) + 1
+    for i in range(p, lim, 2):
+        if n % i == 0:
+            return res | {i} | fact_rec_opt(n // i, i)
+
+    if n > 1:
+        res.add(n)
+    return res
+
+def is_prime_best(n):
+    if n <= 1:
+        return False
+    if n <= 3:
+        return True
+    if n % 2 == 0 or n % 3 == 0:
+        return False
+    
+    i = 5
+    while i * i <= n:
+        if n % i == 0 or n % (i + 2) == 0:
+            return False
+        i += 6
+    return True
+
